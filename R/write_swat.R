@@ -173,12 +173,16 @@ lookup_write_type <- function(file_name) {
     'urban.urb'           = list(type = 'tbl', fmt = c('%-16s', rep('%12.5f', 10), '%-16s')),
     'weather-sta.cli'     = list(type = 'tbl', fmt = c('%-16s', rep('%16s', 8))),
     'weather-wgn.cli'     = list(type = 'not'),
-    'wetland.wet'         = list(type = 'tbl', fmt = c('%8s', '%-16s', rep('%16s', 5))),
+    'wetland.wet'         = list(type = 'tbl', fmt = c('%8d', '%-19s', '%-13s', '%-11s', '%-7s', '%-10s', '%-12s', '%-12s')),
     'wnd.cli'             = list(type = 'tbl', fmt = '%s'),
     'weather_input'       = list(type = 'tbl', fmt = c('%-4d', '%8d', '%7.3f**'), add_lines = 'header')
   )
   return(write_lookup[[file_name]])
 }
+
+
+
+
 
 
 
