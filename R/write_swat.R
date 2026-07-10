@@ -121,7 +121,7 @@ lookup_write_type <- function(file_name) {
     'irr.ops'           = list(type = 'tbl', fmt = c('%-16s', rep('%12.5f', 7))),
     'landuse.lum'       = list(type = 'tbl', fmt = c('%-20s', rep('%16s', 13))),
     'ls_unit.def'       = list(type = 'tbl', fmt = c('%8d', '%16s', '%12.5f', '%8d', '%10d**'), add_lines = 'n_row'),
-    'ls_unit.ele'       = list(type = 'tbl', fmt = c('%8d', '%-16s', '%16s', '%10d', rep('%12.5f', 3))),
+    'ls_unit.ele'       = list(type = 'tbl', fmt = c('%8d', '%-16s', '%16s', '%10d', rep('%12.5f', 2))),
     'lum.dtl'           = list(type = 'not'),
     'management.sch'    = list(type = 'tbl2',
                                fmt_def = c('%-24s', rep('%9.0f', 2)),
