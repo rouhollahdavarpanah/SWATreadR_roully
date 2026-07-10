@@ -114,7 +114,7 @@ lookup_write_type <- function(file_name) {
     'hydrology.hyd'     = list(type = 'tbl', fmt = c('%-16s', rep('%12.5f', 14))),
     'hydrology.res'     = list(type = 'tbl', fmt = c('%-16s', rep('%8d', 2), rep('%12.5f', 8))),
     'hydrology.wet'     = list(type = 'tbl', fmt = c('%-16s', rep('%12.5f', 10))),
-    'hyd-sed-lte.cha'   = list(type = 'tbl', fmt = c('%-16s', '%16s', rep('%12.5f', 21))),
+    'hyd-sed-lte.cha'   = list(type = 'tbl', fmt = c('%-16s', '%16s', rep('%12.5f', 21), '%-16s')),
     'initial.aqu'       = list(type = 'tbl', fmt =  c('%-16s', rep('%16s', 5), '%-16s')),
     'initial.cha'       = list(type = 'tbl', fmt = c('%-16s', rep('%16s', 5), '%-16s')),
     'initial.res'       = list(type = 'tbl', fmt = c('%-16s', rep('%16s', 5), '%-16s')),
@@ -127,7 +127,7 @@ lookup_write_type <- function(file_name) {
                                fmt_def = c('%-24s', rep('%9.0f', 2)),
                                fmt_par = c('%16s', rep('%8.0f', 2), '%12.5f',
                                            rep('%16s', 2), '%12.5f')),
-    'nutrients.cha'       = list(type = 'tbl', fmt = c('%-16s', rep('%12.5f', 19), rep('%8d', 2), rep('%12.5f', 17))),
+    'nutrients.cha'       = list(type = 'tbl', fmt = c('%-16s', rep('%12.5f', 19), rep('%8d', 2), rep('%12.5f', 17), '%-16s')),
     'nutrients.res'       = list(type = 'tbl', fmt = c('%-16s', rep('%8d', 2), rep('%12.5f', 10))),
     'nutrients.sol'       = list(type = 'tbl', fmt = c('%-16s', rep('%12.5f', 11), '%-16s')),
     'object.cnt'          = list(type = 'tbl', fmt = c('%-16s', rep('%12.5f', 2), rep('%8d', 18))),
@@ -142,7 +142,7 @@ lookup_write_type <- function(file_name) {
     'plant.ini'           = list(type = 'tbl2',
                                  fmt_def = c('%-16s', '%8.0f', '%10.0f'),
                                  fmt_par = c('%16s', '%12s', rep('%12.5f', 6))),
-    'plants.plt'          = list(type = 'tbl', fmt = c('%16s', '%-16s', '%-16s', rep('%12.5f', 50))),
+    'plants.plt'          = list(type = 'tbl', fmt = c('%-21s', '%-19s', '%-8s', rep('%12.5f', 50), '%-16s')),
     'print.prt'           = list(type = 'not'),
     'res_rel.dtl'         = list(type = 'not'),
     'reservoir.con'       = list(type = 'con'),
@@ -179,3 +179,7 @@ lookup_write_type <- function(file_name) {
   )
   return(write_lookup[[file_name]])
 }
+
+
+
+
