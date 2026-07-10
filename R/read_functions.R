@@ -16,7 +16,7 @@
 read_tbl <- function(file_path, col_names = NULL, col_types = NULL, n_skip = 1,
                      has_unit = FALSE, keep_attr = FALSE) {
   if (file.exists(file_path)) {
-    tbl <- fread(file_path, skip = n_skip + 1 + has_unit, header = FALSE)
+    tbl <- fread(file_path, skip = n_skip + 1 + has_unit, header = FALSE, fill = TRUE)
     if (is.null(col_names)) {
       col_names <- fread(file_path, skip = n_skip, nrows = 1, header = F) %>%
         unlist(.) %>%
@@ -26,11 +26,20 @@ read_tbl <- function(file_path, col_names = NULL, col_types = NULL, n_skip = 1,
     if ('description' %in% col_names & ncol(tbl) == length(col_names) - 1) {
       tbl <- add_column(tbl, description = '')
     } else if (ncol(tbl) > length(col_names)) {
-      col_names_add <- paste0('v_', 1:(ncol(tbl) - length(col_names)))
-      col_names <- c(col_names, col_names_add)
-      warning("Number of columns of '", basename(file_path),"' > column names.\n",
-              "Column names ", paste(col_names_add, collapse = ', '),
-              ' were assigned to columns at the end.\n')
+      if ('description' %in% col_names) {
+        names(tbl) <- c(col_names, paste0('v_', 1:(ncol(tbl) - length(col_names))))
+        desc_cols  <- grep('^description$|^v_', names(tbl))
+        tbl <- as.data.frame(tbl)
+        tbl$description <- apply(tbl[, desc_cols], 1,
+                                 function(x) trimws(paste(x[x != ''], collapse = ' ')))
+        tbl <- tbl[, col_names]
+      } else {
+        col_names_add <- paste0('v_', 1:(ncol(tbl) - length(col_names)))
+        col_names <- c(col_names, col_names_add)
+        warning("Number of columns of '", basename(file_path),"' > column names.\n",
+                "Column names ", paste(col_names_add, collapse = ', '),
+                ' were assigned to columns at the end.\n')
+      }
     } else if (ncol(tbl) < length(col_names)) {
       col_names_rmv <- col_names[(ncol(tbl) + 1):length(col_names)]
       col_names <- col_names[1:ncol(tbl)]
@@ -38,33 +47,26 @@ read_tbl <- function(file_path, col_names = NULL, col_types = NULL, n_skip = 1,
               "Column names ", paste(col_names_rmv, collapse = ', '),
               ' were removed.\n')
     }
-
     names(tbl) <- col_names
     tbl <- tibble(tbl)
-
     if(is.null(keep_attr)) keep_attr <- FALSE
-
     if(keep_attr & n_skip > 1) {
       tbl_attr <- readLines(file_path, n = n_skip)
       attr(tbl, 'header') <- tbl_attr[2:n_skip]
     }
-
   } else {
     if (is.null(col_names)) {
       stop("File '", basename(file_path), "' does not exist and no 'col_names' ",
            'were provided to generate empty table.')
     }
-
     tbl <- tibble(!!!rep(NA, length(col_names)),
                   .rows = 0, .name_repair = ~ col_names)
   }
-
   if(!is.null(col_types)) {
     col_types <- unlist(strsplit(col_types, '')) %>%
       recode(., c = 'character', d = 'numeric', i = 'integer')
     tbl <- map2_df(tbl, col_types, ~ as(.x, .y))
   }
-
   return(tbl)
 }
 
